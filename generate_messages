@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+$colourcode = "ABCDEFGHIJKLMNPQRSW";
+function randomColour() {
+    global $colourcode;
+    return $colourcode[mt_rand(0, strlen($colourcode) - 1)];
+}
+
+$lines = "";
+for ($i = 0; $i < 100; $i++) {
+    $lines .= randomColour() . json_decode(file_get_contents("http://localhost/cah.json"))->wisdom . PHP_EOL;
+} 
+
+file_put_contents("messages.txt", $lines);

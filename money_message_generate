@@ -1,0 +1,53 @@
+#!/usr/bin/env php
+<?php // generates a money progress bar message for the LED sign
+
+function specialChar($code) {
+    return "<U" . strtoupper(str_pad(dechex($code), 2, "0", STR_PAD_LEFT)) . ">";
+}
+
+$membershipStats = json_decode(file_get_contents("http://hackerdeen.org/api/membership"));
+$currentMembers = $membershipStats->membership[0][2]; //get this month's value
+$requiredMembers = 15;
+
+$progressBarWidth = 8;
+$progress = $currentMembers / $requiredMembers; // out of 1
+
+$normalCode = "R"; // Red colour (prefixed, Python script escapes)
+$colourCode = "<CQ>"; // Green on Dim Red
+if ($progress < 0.5) {
+    $colourRevert = "<CB>"; // Red for <50%
+} else if ($progress < 0.75) {
+    $colourRevert = "<CH>"; // Orange for <75%
+} else if ($progress < 1) {
+    $colourRevert = "<CJ>"; // Yellow for <100%
+} else {
+    $colourRevert = "<CE>"; // Bright Green for 100%
+}
+$poundSymbol = specialChar(0x23); // £
+$blackBox = specialChar(0x0F); // ▉
+$halfBox = specialChar(0x11); // ▌
+
+$message = "$normalCode";
+$message .= "$poundSymbol";
+
+// draw progress bar (using block chars in inverse red/green)
+$message .= $colourCode;
+$filled = (int)($progress * $progressBarWidth * 2);
+$unfilled = (int)(($progressBarWidth * 2 - $filled) / 2);
+while ($filled > 0) {
+    if ($filled >= 2) {
+        $message .= $blackBox;
+    } else {
+        $message .= $halfBox;
+    }
+    $filled -= 2;
+}
+for ($i = 0; $i < $unfilled; $i++) {
+    $message .= " ";
+}
+$message .= $colourRevert;
+
+$message .= str_pad((int)($progress * 100) . "%", 4, " ", STR_PAD_LEFT);
+
+file_put_contents("messages.txt", $message);
+
