@@ -57,9 +57,9 @@ def buildCommand(message):
     check = 0;
     for i in range(0, len(pcmd)):
         check = check ^ ord(pcmd[i])
-    print pcmd
+    print "checksum on " + repr(pcmd)
     cmd = "<ID01><L1><PA><FE><MA><WC><FC><C%s>%s%s<E>" % (colour, message, ("%02x" % (check)).upper())
-    print cmd
+    print "command sent " + repr(cmd)
     return cmd
 
 def updateDisplay():

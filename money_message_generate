@@ -10,7 +10,7 @@ $currentMembers = $membershipStats->membership[0][2]; //get this month's value
 // blatant lies, but it's temporary, so it's morally unproblematic!!
 // (you can tell I want to be a politician, can't you?')
 if (date('Y-m') === '2014-09') $currentMembers += 1;
-$requiredMembers = 15;
+$requiredMembers = 17;
 
 $progressBarWidth = 8;
 $progress = $currentMembers / $requiredMembers; // out of 1
