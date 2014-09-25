@@ -38,16 +38,16 @@ packetQueue = Queue()
 def send(packet):
     global display, packetQueue
     
-    while not packetQueue.empty():
-        display.write(packetQueue.get())
-    
     packet = buildPacketHeader(packet)
     print(repr(packet) + " queued")
     packetQueue.put(packet)
 
 
-def run():
-    while True:
+def run(forever=False):
+    while not packetQueue.empty():
+        display.write(packetQueue.get())
+    
+    while not (not forever and packetQueue.empty()):
         sleep(0.2)
         if display.inWaiting():
             msg = display.read(display.inWaiting())

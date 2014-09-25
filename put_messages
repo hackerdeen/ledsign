@@ -1,0 +1,10 @@
+#!/usr/bin/env python2
+
+import ledsignlib
+
+with open("./messages.txt", "r") as fp:
+    for line in fp:
+        colour, message = line[0], line[1:]
+        ledsignlib.send(ledsignlib.pageContentPayload("<C%s>%s" % (colour, message)))
+
+ledsignlib.run()
