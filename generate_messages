@@ -7,7 +7,7 @@ function randomColour() {
 }
 
 $lines = "";
-for ($i = 0; $i < 100; $i++) {
+for ($i = 0; $i < 8; $i++) {
     $lines .= randomColour() . json_decode(file_get_contents("http://localhost/cah.json"))->wisdom . PHP_EOL;
 } 
 

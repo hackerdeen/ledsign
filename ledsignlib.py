@@ -44,7 +44,7 @@ def send(packet):
 
 
 def run(forever=False):
-    while not packetQueue.empty():
+    if not packetQueue.empty():
         display.write(packetQueue.get())
     
     while not (not forever and packetQueue.empty()):
@@ -52,6 +52,7 @@ def run(forever=False):
         if display.inWaiting():
             msg = display.read(display.inWaiting())
             if msg == 'ACK':
+                print("sent queued packet")
                 display.write(packetQueue.get())
             else:
                 print "Got a %s" % msg

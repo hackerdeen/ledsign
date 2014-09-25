@@ -3,8 +3,9 @@
 import ledsignlib
 
 with open("./messages.txt", "r") as fp:
-    for line in fp:
-        colour, message = line[0], line[1:]
-        ledsignlib.send(ledsignlib.pageContentPayload("<C%s>%s" % (colour, message)))
+    for lineNo, line in enumerate(fp, start=1):
+        colour, message = line[0], line[1:].rstrip('\r\n')
+        ledsignlib.send(ledsignlib.pageContentPayload("<C%s>%s" % (colour, message), line=lineNo, lead=('e' if lineNo == 1 else 'E'), lag=('i' if lineNo == 1 else 'I')))
+
 
 ledsignlib.run()
